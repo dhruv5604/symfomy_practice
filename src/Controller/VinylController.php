@@ -5,13 +5,15 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
+
 use function Symfony\Component\String\u;
 
 
 class VinylController extends AbstractController 
 {
-    #[Route('/')]
-    public function homepage(): Response 
+    #[Route('/', name: 'app_homepage')]
+    public function homepage(Environment $twig): Response 
     {   
         $tracks = [
             'Gangstar\'s paradise - Coolio',
@@ -21,23 +23,22 @@ class VinylController extends AbstractController
             'On Bended Knee - Boyz II men'
         ];
 
-        return $this->render('vinyl/homepage.html.twig', [
+        $html = $twig->render('vinyl/homepage.html.twig', [
             "title" => 'PB and Jams',
             "tracks" => $tracks
         ]);
+
+        return new Response($html);
     }
 
-    #[Route('/browse/{slug}')]
+    #[Route('/browse/{slug}', name: 'app_browse')]
     public function browse($slug = null): Response 
     {
-        if($slug){
-            $title = "Genres: " . u(str_replace('-',' ',$slug))->title(true);
-        } else {
-            $title = "All Genres";
-        }
+        $genre = $slug ? u(str_replace('-',' ',$slug))->title(true) : null;
 
-
-        return new Response($title);
+        return $this->render('vinyl/browse.html.twig', [
+            'genre'=>$genre,
+        ]);
     }
 
 }
