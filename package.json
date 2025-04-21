@@ -22,6 +22,7 @@
     "dependencies": {
         "@hotwired/stimulus": "^3.2.2",
         "@symfony/stimulus-bridge": "^4.0.0",
+        "@symfony/ux-turbo": "^2.24.0",
         "bootstrap": "^5.3.5"
     },
     "name": "mixed_vinyl",
